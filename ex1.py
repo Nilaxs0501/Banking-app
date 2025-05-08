@@ -1,9 +1,22 @@
-def Customer():
-    Name=input("Enter your Name:")
-    Nic_num=input("Enter your Nic number:")
-    Username=input("Enter your username:")
-    Password=input("Enter your password:")
-    return Customer
+#====================== Customer information===================
+def Customer_info():
+    Name = input("Enter your Name:")
+    Nic_num = input("Enter your Nic number:")
+    Username = input("Enter your username:")
+    Password = input("Enter your password:")
+    return [Name,Nic_num,Username,Password]
+
+def Create_Customer_and_User():
+    Customers = Customer_info()
+with open("Customers.txt", "a") as file:
+        file.write(f"{name},{nic},{username},{password}\n")
+
+    with open("Customers.txt","a")as Customers_file:
+        Customers_file.write(f"{Customers[0]},{Customers[1]}\n")
+
+    with open("User.txt","a")as User_file:    
+        User_file.write(f"{Customers[2]},{Customers[3]}\n")
+
 def Deposit():
     try:
         amount= float(input("Enter deposit amount: "))
@@ -30,21 +43,27 @@ def Withdraw():
          except ValueError:
             print("please enter the valid amount.")
  
-    
-
-
-def Customer_Creation():
+def Account_creation():
     try:
+        username = input("Enter username for new account: ")
+        if username in User :
+            print("Account already exists.")
+            return
         balance = float(input("Enter initial deposit amount: "))
         if balance > 0:
-            username = balance
-            print(f"Account for {username} created New balance is: {balance}")
+            Bank_accounts[username] = balance
+            Transaction_history[username] = [f"Initial deposit {balance}"]
+            print(f"Account created. New balance is: {balance}")
         else:
-            print("Enter the valid deposit amount.")
+            print("Invalid deposit amount.")
     except ValueError:
         print("Invalid amount.")
+
 def view_transactions ():
     print("view transaction history :" )
+
+
+
 #====================================ADMIN================================================
 def admin_menu():
     while True:
@@ -57,27 +76,18 @@ def admin_menu():
         print("6. View Transaction History")
         print("7. Logout")
         choice = input("Enter choice: ")
-
+            
         if choice == '1':
             print("\nCustomer Accounts:")
-            Customer()
+            Create_Customer_and_User()
         elif choice == '2':
-            Customer_Creation()
-        elif choice == '3':
-             Deposit()
 
-        elif choice == '4':
-                 Withdraw()
-
-        elif choice == '7':
-            print("Logging out from admin account.")
-            break
         else:
             print("Invalid choice. Please try again.")
 #================================CUSTOMER CREATION======================================
-def customer_menu(Bank_accounts,username):
+def customer_menu():
     while True:
-        print(f"\nWelcome {username}")
+        print(f"\nWelcome ")
         print("1. View balance")
         print("2. Deposit money")
         print("3. Withdraw money")
@@ -85,41 +95,9 @@ def customer_menu(Bank_accounts,username):
         print("5. Logout")
         choice = input("Enter choice: ")
 
-        if choice == '1':
-            print(f"Your balance is:Bank_accounts{ {username}}")
-        elif choice == '2':
-            try:
-                amount = float(input("Enter deposit amount: "))
-                if amount <= 0:
-                    print("Deposit amount must be positive.")
-                else:
-                   Bank_accounts [username] += amount
-                print(f"{amount} deposited. New balance is: {username}")
-            except ValueError:
-                print("Invalid amount.")
-        elif choice == '3':
-            try:
-                amount = float(input("Enter withdrawal amount: "))
-                if amount <= 0:
-                    print("Withdrawal amount must be positive.")
-                elif amount > [username]:
-                    print("Insufficient balance.")
-                else:
-                    Bank_accounts[username] -= amount
-                    print(f"{amount} withdrawn. New balance is: {username}")
-            except ValueError:
-                print("Invalid amount.")
-        elif  choice=='4':
-                 view_transactions()
-        elif choice == '5':
-            print(f"Logging out {username}.")
-            break
-        else:
-            print("Invalid choice. Please try again.")
+       
 #============================MAIN FUNCTION=================================
 def main():
-    Bank_accounts={}
-    
     while True:
         print("\nWelcome to Mini Banking System")
         print("1. Admin Login")
@@ -136,8 +114,8 @@ def main():
                 print("Incorrect password.")
         elif choice == '2':
             username = input("Enter your username: ")
-            if username in Bank_accounts:
-                customer_menu( Bank_accounts, username)
+            if username in username :
+                customer_menu ( )
             else:
                 print("Account does not exist. Please contact admin to create an account.")
         elif choice == '3':
